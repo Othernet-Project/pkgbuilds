@@ -1,0 +1,53 @@
+# Maintainer: Kyle Keen <keenerd@gmail.com>
+
+pkgname=python2-librarian
+_name=librarian
+pkgver=0.2
+pkgrel=1
+pkgdesc="Content library manager for Outernet Receiver"
+url="https://github.com/Outernet-Project/librarian"
+arch=('any')
+license=('GPLv3')
+depends=('python2-bjoern' 'python2-gevent'
+    'python2-bottle' 'python2-bottle-utils'
+    'python2-scandir' 'python2-outernet-metadata'
+    'python2-pbkdf2' 'python2-sqlize' 'python2-bottle-fdsend')
+makedepends=('python2-setuptools')
+#optdeps: tvheadend ondd
+source=("https://github.com/Outernet-Project/librarian/archive/v$pkgver.tar.gz")
+md5sums=('da070805de7893cf0645ebbbac2ff810')
+
+backup=(
+	'etc/librarian/librarian.ini'
+)
+
+
+# todo: special user permissions?  uninstall function?
+# /var/log/librarian.log
+# /var/lib/outernet
+# /var/spool/downloads
+# /srv/zipballs
+
+# todo: systemd service
+
+build() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py build
+    echo -e "#!/bin/sh\nexec python2 -m librarian.app" > librarian.sh
+}
+
+check() {
+    cd "$srcdir/$_name-$pkgver"
+    return 0
+}
+
+package() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py install --prefix=/usr --root="$pkgdir"
+    install -Dm755 librarian.sh "$pkgdir/usr/bin/librarian"
+
+    # yuck
+    install -d "$pkgdir/etc/librarian"
+    mv "$pkgdir/usr/lib/python2.7/site-packages/librarian/librarian.ini" "$pkgdir/etc/librarian/"
+    ln -s  "/etc/librarian/librarian.ini" "$pkgdir/usr/lib/python2.7/site-packages/librarian/librarian.ini"
+}

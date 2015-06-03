@@ -1,0 +1,29 @@
+# Maintainer: Kyle Keen <keenerd@gmail.com>
+
+pkgname=python2-chainable-validators
+_name=chainable-validators
+pkgver=0.5
+pkgrel=1
+pkgdesc="Python data validation framework that uses chainable validator"
+url="https://pypi.python.org/pypi/chainable-validators"
+arch=('any')
+license=('GPLv3')
+depends=('python2')
+makedepends=('python2-setuptools')
+source=("https://pypi.python.org/packages/source/c/chainable-validators/chainable-validators-$pkgver.tar.gz")
+md5sums=('5c1c958aa6ccbed78f53b34cdc919e4d')
+
+build() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py build
+}
+
+check() {
+    cd "$srcdir/$_name-$pkgver"
+    return 0
+}
+
+package() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py install --prefix=/usr --root="$pkgdir"
+}

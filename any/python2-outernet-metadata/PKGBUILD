@@ -1,0 +1,30 @@
+# Maintainer: Kyle Keen <keenerd@gmail.com>
+
+pkgname=python2-outernet-metadata
+_name=outernet-metadata
+pkgver=0.5.post3
+pkgrel=1
+pkgdesc="Tools for working with Outernet metadata"
+url="https://pypi.python.org/pypi/outernet-metadata"
+arch=('any')
+license=('GPLv3')
+depends=('python2' 'python2-chainable-validators')
+optdepens=('python2-conz: CLI utilities')
+makedepends=('python2-setuptools')
+source=("https://pypi.python.org/packages/source/o/outernet-metadata/outernet-metadata-$pkgver.tar.gz")
+md5sums=('15009bf5e66cabc601288725c994f153')
+
+build() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py build
+}
+
+check() {
+    cd "$srcdir/$_name-$pkgver"
+    return 0
+}
+
+package() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py install --prefix=/usr --root="$pkgdir"
+}

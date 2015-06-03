@@ -1,0 +1,29 @@
+# Maintainer: Kyle Keen <keenerd@gmail.com>
+
+pkgname=python2-sqlize
+_name=sqlize
+pkgver=0.1
+pkgrel=1
+pkgdesc="Lightweight SQL query builder"
+url="https://pypi.python.org/pypi/sqlize"
+arch=('any')
+license=('GPLv3')
+depends=('python2')
+makedepends=('python2-setuptools')
+source=("https://pypi.python.org/packages/source/s/sqlize/sqlize-$pkgver.tar.gz")
+md5sums=('f266e4828b5fec7eca4fa5e5937e1317')
+
+build() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py build
+}
+
+check() {
+    cd "$srcdir/$_name-$pkgver"
+    return 0
+}
+
+package() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py install --prefix=/usr --root="$pkgdir"
+}

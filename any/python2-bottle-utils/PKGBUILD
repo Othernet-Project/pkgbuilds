@@ -1,0 +1,67 @@
+# Maintainer: Kyle Keen <keenerd@gmail.com>
+
+pkgname=python2-bottle-utils
+_name=bottle-utils
+pkgver=0.3.2
+# todo, get recursive pip/easy_install to play friendly with makepkg
+_bu_html=0.3.7
+_bu_flash=0.3.2
+_bu_meta=0.3.2
+_bu_i18n=0.3.5
+_bu_csrf=0.3.2
+_bu_ajax=0.3.1
+_bu_common=0.3.2
+_bu_lazy=0.3.2
+_bu_http=0.3
+pkgrel=1
+pkgdesc="Assortment of frequently used utilities for Bottle framework"
+#url="http://outernet-project.github.io/bottle-utils/"
+url="https://github.com/Outernet-Project/bottle-utils"
+arch=('any')
+license=('GPLv3')
+depends=('python2-bottle')
+makedepends=('python2-setuptools')
+source=("https://pypi.python.org/packages/source/b/bottle-utils/bottle-utils-$pkgver.tar.gz"
+    "https://pypi.python.org/packages/source/b/bottle-utils-html/bottle-utils-html-$_bu_html.tar.gz"
+    "https://pypi.python.org/packages/source/b/bottle-utils-flash/bottle-utils-flash-$_bu_flash.tar.gz"
+    "https://pypi.python.org/packages/source/b/bottle-utils-meta/bottle-utils-meta-$_bu_meta.tar.gz"
+    "https://pypi.python.org/packages/source/b/bottle-utils-i18n/bottle-utils-i18n-$_bu_i18n.tar.gz"
+    "https://pypi.python.org/packages/source/b/bottle-utils-csrf/bottle-utils-csrf-$_bu_csrf.tar.gz"
+    "https://pypi.python.org/packages/source/b/bottle-utils-ajax/bottle-utils-ajax-$_bu_ajax.tar.gz"
+    "https://pypi.python.org/packages/source/b/bottle-utils-common/bottle-utils-common-$_bu_common.tar.gz"
+    "https://pypi.python.org/packages/source/b/bottle-utils-lazy/bottle-utils-lazy-$_bu_lazy.tar.gz"
+    "https://pypi.python.org/packages/source/b/bottle-utils-http/bottle-utils-http-$_bu_http.tar.gz"
+)
+md5sums=('fbf1e963e1fe3a86cd631dc5e3902be5'
+         '2ecd4bb4865b39d773641b828e260277'
+         'aa9ba197264b2a3523a73848558902a5'
+         '8c1fc94ee41fe43e13f0269b6e876ba8'
+         '24c47685510b41f73dedfdd26e147542'
+         'fd3db59f65b5e309ce80c018e5bc2396'
+         '49ea6e9e44da79510c59cfb648085303'
+         '40cc527801837571bb52412b8187d64e'
+         'e5df4454b257cd87975dd5517bb6e1ad'
+         '443a368cce614e90e72d5de7eb1b2b8f')
+
+build() {
+    cd "$srcdir"
+    for i in $(find ./ -maxdepth 1 -mindepth 1 -type d); do
+        pushd $i
+        python2 setup.py build
+        popd
+    done
+}
+
+check() {
+    cd "$srcdir"
+    return 0
+}
+
+package() {
+    cd "$srcdir/"
+    for i in $(find ./ -maxdepth 1 -mindepth 1 -type d); do
+        pushd $i
+        python2 setup.py install --prefix=/usr --root="$pkgdir"
+        popd
+    done
+}

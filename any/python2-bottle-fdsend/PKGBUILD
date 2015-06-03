@@ -1,0 +1,31 @@
+# Maintainer: Kyle Keen <keenerd@gmail.com>
+
+pkgname=python2-bottle-fdsend
+_name=bottle-fdsend
+# of no relation to debian's fdsend
+pkgver=0.1.1
+pkgrel=1
+pkgdesc="Library for constructing responses from file descriptors"
+url="https://pypi.python.org/pypi/bottle-fdsend"
+arch=('any')
+license=('GPLv3')
+depends=('python2')
+makedepends=('python2-setuptools')
+source=("https://pypi.python.org/packages/source/o/outernet-metadata/outernet-metadata-$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/b/bottle-fdsend/bottle-fdsend-$pkgver.tar.gz")
+md5sums=('e4d02f1bd8c7a4ba884f8bbf5736012e')
+
+build() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py build
+}
+
+check() {
+    cd "$srcdir/$_name-$pkgver"
+    return 0
+}
+
+package() {
+    cd "$srcdir/$_name-$pkgver"
+    python2 setup.py install --prefix=/usr --root="$pkgdir"
+}
